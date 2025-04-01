@@ -36,7 +36,7 @@ It allows users to:
 
 ### **1️⃣ Prerequisites**
 
-- Node.js (v20 or higher)
+- Node.js (v22 or higher)
 - Yarn package manager
 
 ### **2️⃣ Clone the Repository**
