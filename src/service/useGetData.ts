@@ -6,12 +6,8 @@ import type { Option, Doctor, ReturnObject, Mcu } from "src/types/patient-form";
 
 import { fetcher } from "./api";
 
-export const useGetData = () => {
-  const {
-    data: treatments,
-    error: treatmentsError,
-    isFetching: isTreatmentsFetching,
-  } = useQuery<Option[]>({
+export const useGetTreatments = () =>
+  useQuery<Option[]>({
     queryKey: ["treatments"],
     queryFn: async () => {
       try {
@@ -26,14 +22,12 @@ export const useGetData = () => {
         throw error;
       }
     },
+    staleTime: 1000 * 60 * 60 * 24,
     retry: false,
   });
 
-  const {
-    data: medications,
-    error: medicationsError,
-    isFetching: isMedicationsFetching,
-  } = useQuery<Option[]>({
+export const useGetMedications = () =>
+  useQuery<Option[]>({
     queryKey: ["medications"],
     queryFn: async () => {
       try {
@@ -48,14 +42,12 @@ export const useGetData = () => {
         throw error;
       }
     },
+    staleTime: 1000 * 60 * 60 * 24,
     retry: false,
   });
 
-  const {
-    data: doctors,
-    error: doctorError,
-    isFetching: isDoctorsFetching,
-  } = useQuery<Doctor[]>({
+export const useGetDoctors = () =>
+  useQuery<Doctor[]>({
     queryKey: ["doctor"],
     queryFn: async () => {
       try {
@@ -70,14 +62,12 @@ export const useGetData = () => {
         throw error;
       }
     },
+    staleTime: 1000 * 60 * 60 * 24,
     retry: false,
   });
 
-  const {
-    data: visits,
-    error: visitError,
-    isFetching: isVisitsFetching,
-  } = useQuery<Mcu[]>({
+export const useGetVisits = () =>
+  useQuery<Mcu[]>({
     queryKey: ["mcu"],
     queryFn: async () => {
       try {
@@ -94,19 +84,3 @@ export const useGetData = () => {
     },
     retry: false,
   });
-
-  return {
-    treatments,
-    treatmentsError,
-    isTreatmentsFetching,
-    medications,
-    medicationsError,
-    isMedicationsFetching,
-    doctors,
-    doctorError,
-    isDoctorsFetching,
-    visits,
-    visitError,
-    isVisitsFetching,
-  };
-};

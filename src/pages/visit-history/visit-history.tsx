@@ -1,14 +1,22 @@
-import { useGetData } from "src/service/useGetData";
+import { useNavigate } from "react-router-dom";
+
+import { useGetVisits } from "src/service/useGetData";
 
 import { LoadingScreen } from "src/components/loading-screen";
 import { Alert } from "src/components/ui/alert";
 import { Badge } from "src/components/ui/badge";
+import { Button } from "src/components/ui/button";
 import { Card } from "src/components/ui/card";
 
 import { Mcu } from "src/types/patient-form";
 
 export default function VisitHistory() {
-  const { visits, visitError, isVisitsFetching } = useGetData();
+  const navigate = useNavigate();
+  const {
+    data: visits,
+    error: visitError,
+    isFetching: isVisitsFetching,
+  } = useGetVisits();
 
   if (isVisitsFetching) {
     return <LoadingScreen />;
@@ -27,7 +35,18 @@ export default function VisitHistory() {
 
   return (
     <div className="space-y-4">
-      <p className="text-2xl font-bold mb-2">Visit History</p>
+      <div className="flex items-end">
+        <p className="text-2xl font-bold mb-2">Patient Visit Form</p>
+
+        <Button
+          className="ml-auto"
+          onClick={() => {
+            navigate("/");
+          }}
+        >
+          Show Record
+        </Button>
+      </div>
       {visits?.map((visit: Mcu) => (
         <Card key={visit.visit_id} className="p-4">
           <p className="font-semibold text-lg">

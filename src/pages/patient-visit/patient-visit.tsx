@@ -5,7 +5,11 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { z } from "zod";
 
-import { useGetData } from "src/service/useGetData";
+import {
+  useGetDoctors,
+  useGetMedications,
+  useGetTreatments,
+} from "src/service/useGetData";
 import { useSubmitMcu } from "src/service/useSubmitMcu";
 
 import { LoadingScreen } from "src/components/loading-screen";
@@ -27,10 +31,7 @@ import type { PatientVisit } from "src/types/patient-form";
 
 const formSchema = z.object({
   patient_name: z.string().min(2, "Name must be at least 2 characters"),
-  patient_id: z
-    .string()
-    .length(16, "Patient ID must be exactly 16 characters")
-    .regex(/^[a-zA-Z0-9]+$/, "Invalid Patient ID"),
+  patient_id: z.string().regex(/^[a-zA-Z0-9]+$/, "Invalid Patient ID"),
   date_of_treatment: z.string().refine((date) => !isNaN(Date.parse(date)), {
     message: "Invalid Date",
   }),
@@ -64,16 +65,22 @@ export default function PatientVisit() {
 
   // ✅ Fetch Options from API
   const {
-    treatments,
-    medications,
-    doctors,
-    isDoctorsFetching,
-    isMedicationsFetching,
-    isTreatmentsFetching,
-    doctorError,
-    medicationsError,
-    treatmentsError,
-  } = useGetData();
+    data: treatments,
+    isFetching: isTreatmentsFetching,
+    error: treatmentsError,
+  } = useGetTreatments();
+
+  const {
+    data: medications,
+    isFetching: isMedicationsFetching,
+    error: medicationsError,
+  } = useGetMedications();
+
+  const {
+    data: doctors,
+    isFetching: isDoctorsFetching,
+    error: doctorError,
+  } = useGetDoctors();
 
   // ✅ Submit Mutation
   const submitMutation = useSubmitMcu();
@@ -85,6 +92,7 @@ export default function PatientVisit() {
         form.reset();
         form.setValue("doctor_id", "");
         form.setValue("cost_of_treatment", 0);
+        navigate("/visit-history");
       },
     });
   };
@@ -142,7 +150,7 @@ export default function PatientVisit() {
             name="patient_id"
             render={({ field }) => (
               <FormItem>
-                <Label>Patient ID (NIK)</Label>
+                <Label>Patient ID</Label>
                 <Input {...field} placeholder="Enter patient NIK" />
                 <FormMessage />
               </FormItem>
@@ -167,7 +175,7 @@ export default function PatientVisit() {
                   <SelectContent>
                     {doctors?.map((doctor) => (
                       <SelectItem key={doctor.id} value={doctor.id}>
-                        {doctor.name}
+                        {doctor.name} - {doctor.specialization}
                       </SelectItem>
                     ))}
                   </SelectContent>

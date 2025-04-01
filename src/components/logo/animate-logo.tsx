@@ -7,9 +7,9 @@ export function AnimateLogo({ logo }: { logo?: React.ReactNode }) {
         {logo ?? <Logo width="64px" height="64px" />}
       </div>
 
-      <div className="absolute w-[70%] h-[70%] border-4 border-primary opacity-50 rounded-[25%] animate-spinFastReverse" />
+      <div className="absolute w-[70%] h-[70%] border-4 border-red-400 opacity-50 rounded-[25%] animate-spinFastReverse" />
 
-      <div className="absolute w-[85%] h-[85%] border-2 border-primary opacity-25 rounded-[25%] animate-spinFast" />
+      <div className="absolute w-[85%] h-[85%] border-2 border-red-400 opacity-25 rounded-[25%] animate-spinFast" />
     </div>
   );
 }

@@ -1,6 +1,9 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 import LogoImage from "src/assets/carenow.png";
+
+import { cn } from "src/lib/utils";
 
 interface LogoProps {
   width?: string;
@@ -13,8 +16,12 @@ export function Logo({
   height = "100px",
   className,
 }: LogoProps): React.JSX.Element {
+  const navigate = useNavigate();
   return (
-    <div className={className}>
+    <div
+      className={cn(className, "cursor-pointer")}
+      onClick={() => navigate("/")}
+    >
       <img alt="Carenow Logo" src={LogoImage} style={{ width, height }} />
     </div>
   );

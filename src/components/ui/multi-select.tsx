@@ -53,7 +53,11 @@ export function MultiSelect({
           <Iconify icon="tabler:chevron-down" size={24} className="h-4 w-4" />
         </button>
       </PopoverTrigger>
-      <PopoverContent align="start" side="bottom" className="p-2 w-64">
+      <PopoverContent
+        align="start"
+        side="bottom"
+        className="p-2 w-64 max-h-60 overflow-y-auto"
+      >
         {options.length === 0 ? (
           <div className="text-sm text-gray-500 p-2">No options available</div>
         ) : (
